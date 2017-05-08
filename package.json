@@ -1,0 +1,23 @@
+{
+  "name": "yesterdays-travels-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GLSea1979/yesterdays-travels-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GLSea1979/yesterdays-travels-backend/issues"
+  },
+  "homepage": "https://github.com/GLSea1979/yesterdays-travels-backend#readme"
+}
