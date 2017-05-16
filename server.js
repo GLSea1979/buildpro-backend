@@ -16,6 +16,8 @@ const authRouter = require('./routes/auth-route.js');
 
 const PORT = process.env.PORT || 8000;
 
+mongoose.connect(process.env.MONGODB_URI);
+
 app.use(cors());
 app.use(morgan('dev'));
 // app.use(basic);
