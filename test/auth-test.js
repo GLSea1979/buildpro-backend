@@ -148,38 +148,62 @@ describe('Auth Routes', function() {
         });
       });
     });
-    describe('PUT: /api/newPassword', function() {
-      beforeEach( done => {
-        let user = new User(sampleUser);
-        user.generatePasswordHash(sampleUser.password)
-        .then( user => {
-          return user.save();
-        })
-        .then( user => {
-          this.tempUser = user;
-          done();
-        })
-        .catch(done);
-      });
+  });
+  describe('PUT: /api/newPassword', function() {
+    beforeEach( done => {
+      let user = new User(sampleUser);
+      user.generatePasswordHash(sampleUser.password)
+      .then( user => {
+        return user.save();
+      })
+      .then( user => {
+        this.tempUser = user;
+        done();
+      })
+      .catch(done);
+    });
 
-      afterEach( done => {
-        User.remove({})
-        .then( () => done())
-        .catch(done);
-      });
+    afterEach( done => {
+      User.remove({})
+      .then( () => done())
+      .catch(done);
+    });
 
-      it('should update a username with a valid username and body', done => {
-        let updateUser = { username: 'some new name'};
-        request.put(`${url}/api/newUserName/`)
-        .send(updateUser)
-        .auth('test username', 'testpassword')
-        .set('Content-Type', 'application/json')
-        .end((err, res) => {
-          if(err) return done(err);
-          expect(res.status).to.equal(200);
-          expect(res.body.username).to.equal('some new name');
-          done();
-        });
+    it('should update a username with a valid username and body', done => {
+      let updateUser = { username: 'some new name'};
+      request.put(`${url}/api/newUserName/`)
+      .send(updateUser)
+      .auth('test username', 'testpassword')
+      .set('Content-Type', 'application/json')
+      .end((err, res) => {
+        if(err) return done(err);
+        expect(res.status).to.equal(200);
+        expect(res.body.username).to.equal('some new name');
+        done();
+      });
+    });
+  });
+
+  describe('DELETE: /api/remove/:id', function() {
+    before( done => {
+      let user = new User(sampleUser);
+      user.generatePasswordHash(sampleUser.password)
+      .then( user => {
+        return user.save();
+      })
+      .then( user => {
+        this.tempUser = user;
+        done();
+      })
+      .catch(done);
+    });
+    it('should return a 204', done => {
+      request.delete(`${url}/api/remove/${this.tempUser._id}`)
+      .auth('test username', 'testpassword')
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.status).to.equal(204);
+        done();
       });
     });
   });
