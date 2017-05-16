@@ -12,7 +12,7 @@ const basicAuth = require('../lib/basic-auth-middleware.js');
 
 const authRouter = module.exports = Router();
 
-authRouter.post('./api/signup', jsonParser, function(req, res, next) {
+authRouter.post('/api/signup', jsonParser, function(req, res, next) {
   debug('POST /api/signup');
 
   if (!req.body.username) return next(createError(400, 'need username'));
@@ -68,7 +68,7 @@ authRouter.put('/api/newUserName', basicAuth, jsonParser, function(req, res, nex
   delete req.auth.password;
   User.findOne({ username: req.auth.username })
   .then( user => user.comparePasswordHash(password))
-  .then( user => User.findByIdAndUpdate(user._id, req.body, {new:true} ))
+  .then( user => User.findByIdAndUpdate(user._id, req.body, {new: true} ))
   .then( user => {
     res.json(user);
   })
