@@ -128,7 +128,7 @@ describe('Auth Routes', function() {
         done();
       });
     });
-    describe('without a valid auth', () => {
+    describe('without a valid password', () => {
       it('should return a 401 error', done => {
         request.get(`${url}/api/signin`)
         .auth('test username', 'wrong password')
@@ -182,6 +182,19 @@ describe('Auth Routes', function() {
         done();
       });
     });
+    it('should update a password with a valid username and body', done => {
+      let updateUser = { password: 'somenewpassword'};
+      request.put(`${url}/api/newUserName`)
+      .send(updateUser)
+      .auth('test username', 'testpassword')
+      .set('Content-Type', 'application/json')
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).to.equal(200);
+        expect(res.body.password).to.equal('somenewpassword');
+        done();
+      });
+    });
   });
 
   describe('DELETE: /api/remove/:id', function() {
@@ -204,6 +217,48 @@ describe('Auth Routes', function() {
         if (err) return done(err)
         expect(res.status).to.equal(204);
         done();
+      });
+    });
+    describe('without a valid username', () => {
+      it('should return a 400 error for bad request', done => {
+        request.delete(`${url}/api/remove/3333333`)
+        .auth('wrong username', 'testpassword')
+        .end((err) => {
+          expect(err.status).to.equal(400);
+          expect(err.message).to.equal('Bad Request');
+          done();
+        });
+      });
+    });
+    describe('without a valid username', () => {
+      it('should return a 400 error for bad request', done => {
+        request.delete(`${url}/api/remove/3333333`)
+        .auth('wrong username', 'testpassword')
+        .end((err) => {
+          expect(err.status).to.equal(400);
+          expect(err.message).to.equal('Bad Request');
+          done();
+        });
+      });
+    });
+    describe('without a correct password', () => {
+      it('should return a 400 error for bad request', done => {
+        request.delete(`${url}/api/remove/3333333`)
+        .auth('test username', 'wrong password')
+        .end((err) => {
+          expect(err.status).to.equal(400);
+          expect(err.message).to.equal('Bad Request');
+          done();
+        });
+      });
+    });
+    describe('without auth', () => {
+      it('should return a 401 error for no authorization', done => {
+        request.delete(`${url}/api/remove/${this.tempUser._id}`)
+        .end((err, res) => {
+          expect(err.status).to.equal(401);
+          done();
+        });
       });
     });
   });
