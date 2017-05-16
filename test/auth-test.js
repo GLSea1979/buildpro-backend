@@ -243,7 +243,7 @@ describe('Auth Routes', function() {
     });
     describe('without a correct password', () => {
       it('should return a 400 error for bad request', done => {
-        request.delete(`${url}/api/remove/3333333`)
+        request.delete(`${url}/api/remove/33333333`)
         .auth('test username', 'wrong password')
         .end((err) => {
           expect(err.status).to.equal(400);
