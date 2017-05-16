@@ -68,7 +68,7 @@ authRouter.put('/api/newUserName', basicAuth, jsonParser, function(req, res, nex
   delete req.auth.password;
   User.findOne({ username: req.auth.username })
   .then( user => user.comparePasswordHash(password))
-  .then( user => User.findByIdAndUpdate(user._id, req.body, {new:true} ))
+  .then( user => User.findByIdAndUpdate(user._id, req.body, {new: true} ))
   .then( user => {
     res.json(user);
   })

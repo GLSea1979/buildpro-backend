@@ -99,4 +99,88 @@ describe('Auth Routes', function() {
       });
     });
   });
+  describe('GET: /api/signin', function() {
+    beforeEach( done => {
+      let user = new User(sampleUser);
+      user.generatePasswordHash(sampleUser.password)
+      .then( user => {
+        return user.save();
+      })
+      .then( user => {
+        this.tempUser = user;
+        done();
+      })
+      .catch(done);
+    });
+
+    afterEach( done => {
+      User.remove({})
+      .then( () => done())
+      .catch(done);
+    });
+
+    it('should return a token', done => {
+      request.get(`${url}/api/signin`)
+      .auth('test username', 'testpassword')
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).to.equal(200);
+        done();
+      });
+    });
+    describe('without a valid auth', () => {
+      it('should return a 401 error', done => {
+        request.get(`${url}/api/signin`)
+        .auth('test username', 'wrong password')
+        .end((err) => {
+          expect(err.status).to.equal(401);
+          done();
+        });
+      });
+    });
+    describe('without a valid username', () => {
+      it('should return a 400 error', done => {
+        request.get(`${url}/api/signin`)
+        .auth('wrong username', 'testpassword')
+        .end((err, res) => {
+          expect(err.status).to.equal(401);
+          done();
+        });
+      });
+    });
+    describe('PUT: /api/newPassword', function() {
+      beforeEach( done => {
+        let user = new User(sampleUser);
+        user.generatePasswordHash(sampleUser.password)
+        .then( user => {
+          return user.save();
+        })
+        .then( user => {
+          this.tempUser = user;
+          done();
+        })
+        .catch(done);
+      });
+
+      afterEach( done => {
+        User.remove({})
+        .then( () => done())
+        .catch(done);
+      });
+
+      it('should update a username with a valid username and body', done => {
+        let updateUser = { username: 'some new name'};
+        request.put(`${url}/api/newUserName/`)
+        .send(updateUser)
+        .auth('test username', 'testpassword')
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body.username).to.equal('some new name');
+          done();
+        });
+      });
+    });
+  });
 });
