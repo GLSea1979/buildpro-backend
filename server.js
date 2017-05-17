@@ -11,7 +11,6 @@ const dotenv = require('dotenv');
 dotenv.load();
 
 const errors = require('./lib/error-middleware.js');
-// const basic = require('./routes/')
 const authRouter = require('./routes/auth-route.js');
 
 const PORT = process.env.PORT || 8000;
@@ -20,7 +19,6 @@ mongoose.connect(process.env.MONGODB_URI);
 
 app.use(cors());
 app.use(morgan('dev'));
-// app.use(basic);
 app.use(authRouter);
 app.use(errors);
 

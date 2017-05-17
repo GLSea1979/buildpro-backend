@@ -15,6 +15,13 @@
 
 pkg/
 src/
+##DATA##
+
+### OSX ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
 
 ### MonoDevelop ###
 #User Specific
@@ -81,9 +88,9 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
+# local
 .env
-
+.coveralls.yml
 
 ### Vim ###
 # swap
