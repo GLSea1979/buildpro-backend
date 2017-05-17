@@ -3,7 +3,7 @@
 const Router = require('express').Router;
 const createError = require('http-errors');
 const jsonParser = require('body-parser').json();
-const debug = require('debug')('yesterdays:auth-route');
+const debug = require('debug')('buildpro:auth-route');
 
 const employee = require('../model/employee.js');
 const User = require('../model/user.js');

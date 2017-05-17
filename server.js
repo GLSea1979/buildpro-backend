@@ -3,7 +3,7 @@
 const express = require('express');
 const app = new express();
 const mongoose = require('mongoose');
-const debug = require('debug')('yesterdays:server');
+const debug = require('debug')('buildpro:server');
 const morgan = require('morgan');
 const cors = require('cors');
 const dotenv = require('dotenv');

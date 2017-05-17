@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const createError = require('http-errors');
 const Promise = require('bluebird');
-const debug = require('debug')('yesterdays:user');
+const debug = require('debug')('buildpro:user');
 
 const Schema = mongoose.Schema;
 

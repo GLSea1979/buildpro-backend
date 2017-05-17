@@ -1,5 +1,5 @@
 {
-  "name": "yesterdays-travels-backend",
+  "name": "buildpro-travels-backend",
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
@@ -7,19 +7,19 @@
     "test": "test"
   },
   "scripts": {
-    "test": "DEBUG='yesterdays*', mocha"
+    "test": "DEBUG='buildpro*', mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GLSea1979/yesterdays-travels-backend.git"
+    "url": "git+https://github.com/GLSea1979/buildpro-travels-backend.git"
   },
   "keywords": [],
   "author": "Gary Lundgren",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GLSea1979/yesterdays-travels-backend/issues"
+    "url": "https://github.com/GLSea1979/buildpro-travels-backend/issues"
   },
-  "homepage": "https://github.com/GLSea1979/yesterdays-travels-backend#readme",
+  "homepage": "https://github.com/GLSea1979/buildpro-travels-backend#readme",
   "dependencies": {
     "aws-sdk": "^2.49.0",
     "aws-sdk-mock": "^1.7.0",

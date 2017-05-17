@@ -2,7 +2,7 @@
 
 const expect = require('chai').expect;
 const request = require('superagent');
-const debug = require('debug')('yesterdays:auth-test');
+const debug = require('debug')('buildpro:auth-test');
 
 const User = require('../model/user.js');
 const PORT = process.env.PORT || 8000;
