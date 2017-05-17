@@ -5,7 +5,7 @@ const createError = require('http-errors');
 const jsonParser = require('body-parser').json();
 const debug = require('debug')('yesterdays:auth-route');
 
-const Profile = require('../model/profile.js');
+const employee = require('../model/employee.js');
 const User = require('../model/user.js');
 
 const basicAuth = require('../lib/basic-auth-middleware.js');
@@ -24,9 +24,9 @@ authRouter.post('/api/signup', jsonParser, function(req, res, next) {
   let user = new User(req.body);
   user.generatePasswordHash(password)
   .then( user => {
-    let profile = new Profile();
-    profile.userID = user._id;
-    profile.save();
+    let employee = new Employee();
+    employee.userID = user._id;
+    employee.save();
   })
   .then( () => {
     return user.generateToken();
@@ -79,7 +79,7 @@ authRouter.delete('/api/remove/:id', basicAuth, function(req, res, next) {
   debug('DELETE: /api/remove/:id');
 
   User.findByIdAndRemove(req.params.id)
-  .then(Profile.findByIdAndRemove(req.params.id))
+  .then(employee.findByIdAndRemove(req.params.id))
   .then( () => res.sendStatus(204))
   .catch(next);
 });
