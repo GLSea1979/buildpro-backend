@@ -12,6 +12,7 @@ dotenv.load();
 
 const errors = require('./lib/error-middleware.js');
 const authRouter = require('./routes/auth-route.js');
+const employee = require('./routes/employee-route.js');
 
 const PORT = process.env.PORT || 8000;
 
@@ -20,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URI);
 app.use(cors());
 app.use(morgan('dev'));
 app.use(authRouter);
+app.use(employee);
 app.use(errors);
 
 app.listen(PORT, () => debug('the server is up on:', PORT));

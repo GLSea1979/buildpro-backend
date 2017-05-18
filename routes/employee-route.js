@@ -17,12 +17,13 @@ const s3methods = require('../lib/s3-methods.js');
 const dataDir = `${__dirname}/../data`;
 const upload = multer({dest: dataDir});
 
-const employeeeRouter = module.exports = Router();
+const employeeRouter = module.exports = Router();
 
 employeeRouter.post('/api/employee/:userid', bearerAuth, jsonParser, function(req, res, next) {
   debug('POST: /api/employee/:userid');
 
   req.body.userID = req.params.userid;
+  debug('--------------->', req.body);
   new Employee(req.body).save()
   .then( employee => {
     return res.json(employee);
