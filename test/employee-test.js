@@ -39,7 +39,7 @@ const sampleUpdatedEmployee = {
   lastName: 'newLast',
   startDate: new Date('2000, 11, 11'),
   address: 'newAddress',
-  phoneNumber: 444-4444,
+  phoneNumber: 4444444,
   admin: false
 };
 
@@ -54,7 +54,7 @@ describe('Employee Routes', function() {
   });
 
   describe('POST: /api/employee/:id', function() {
-    before( done => {
+    beforeEach( done => {
       new User(sampleUser)
       .generatePasswordHash(sampleUser.password)
       .then( user => user.save())
@@ -80,6 +80,20 @@ describe('Employee Routes', function() {
           if (err) return done(err);
           expect(res.body.userID).to.equal(this.tempUser._id.toString());
           expect(res.status).to.equal(200);
+          done();
+        });
+      });
+    });
+    describe('with an invalid id', () => {
+      it('should return a 400 error', done => {
+        request.post(`${url}/api/employee/2222222`)
+        .send(sampleUpdatedEmployee)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(err.name).to.equal('Error');
           done();
         });
       });
