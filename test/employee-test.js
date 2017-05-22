@@ -182,4 +182,45 @@ describe('Employee Routes', function() {
       });
     });
   });
+  describe('PUT: /api/employee/:id', function() {
+    before( done => {
+      new User(sampleUser)
+      .generatePasswordHash(sampleUser.password)
+      .then( user => user.save())
+      .then( user => {
+        this.tempUser = user;
+        return user.generateToken();
+      })
+      .then( token => {
+        this.tempToken = token;
+        done();
+      })
+      .catch(done);
+    });
+
+    before( done => {
+      sampleEmployee.userID = this.tempUser._id;
+      new Employee(sampleEmployee).save()
+      .then( employee => {
+        this.tempEmployee = employee;
+        done();
+      })
+      .catch(done);
+    });
+    describe('with a valid request body', () => {
+      it('should return an updated employee object', done => {
+        request.put(`${url}/api/employee/${this.tempEmployee._id}`)
+        .send(sampleUpdatedEmployee)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.body.firstName).to.equal(sampleUpdatedEmployee.firstName);
+          expect(res.status).to.equal(200);
+          done();
+        });
+      });
+    });
+  });
 });
