@@ -31,7 +31,7 @@ employeeRouter.post('/api/employee/:userid', bearerAuth, jsonParser, function(re
   .catch(next);
 });
 
-employeeRouter.get('/api/employee/:id', bearerAuth, jsonParser, function(req, res, nest) {
+employeeRouter.get('/api/employee/:id', bearerAuth, jsonParser, function(req, res, next) {
   debug('GET: /api/employee/:id');
   Employee.findOne({userID:req.params.id})
   .then( employee => {
@@ -45,6 +45,7 @@ employeeRouter.get('/api/all/employee', bearerAuth, function(req, res, next) {
   Employee.find({})
   .then( employees => {
     res.json(employees);
+    debug('res', employees);
   })
   .catch(next);
 });
