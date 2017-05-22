@@ -100,32 +100,33 @@ describe('Employee Routes', function() {
     });
   });
 
-  describe('GET: api/emplyee/:id', function() {
-    describe('with a valid id', () => {
-      before( done => {
-        new User(sampleUser)
-        .generatePasswordHash(sampleUser.password)
-        .then( user => user.save())
-        .then( user => {
-          this.tempUser = user;
-          return user.generateToken();
-        })
-        .then( token => {
-          this.tempToken = token;
-          done();
-        })
-        .catch(done);
-      });
+  describe('GET: api/employee', function() {
+    before( done => {
+      new User(sampleUser)
+      .generatePasswordHash(sampleUser.password)
+      .then( user => user.save())
+      .then( user => {
+        this.tempUser = user;
+        return user.generateToken();
+      })
+      .then( token => {
+        this.tempToken = token;
+        done();
+      })
+      .catch(done);
+    });
 
-      before( done => {
-        sampleEmployee.userID = this.tempUser._id;
-        new Employee(sampleEmployee).save()
-        .then( employee => {
-          this.tempEmployee = employee;
-          done();
-        })
-        .catch(done);
-      });
+    before( done => {
+      sampleEmployee.userID = this.tempUser._id;
+      new Employee(sampleEmployee).save()
+      .then( employee => {
+        this.tempEmployee = employee;
+        done();
+      })
+      .catch(done);
+    });
+
+    describe('an Employee a valid id', () => {
       it('should return a valid employee', done => {
         request.get(`${url}/api/employee/${this.tempUser._id}`)
         .set({
@@ -135,6 +136,47 @@ describe('Employee Routes', function() {
           if(err) return done(err);
           expect(res.status).to.equal(200);
           expect(res.body.userID).to.equal(this.tempUser._id.toString());
+          done();
+        });
+      });
+    });
+
+  });
+  describe('GET: /api/all/employee', function() {
+    before( done => {
+      new User(sampleUser)
+      .generatePasswordHash(sampleUser.password)
+      .then( user => user.save())
+      .then( user => {
+        this.tempUser = user;
+        return user.generateToken();
+      })
+      .then( token => {
+        this.tempToken = token;
+        done();
+      })
+      .catch(done);
+    });
+
+    before( done => {
+      sampleEmployee.userID = this.tempUser._id;
+      new Employee(sampleEmployee).save()
+      .then( employee => {
+        this.tempEmployee = employee;
+        done();
+      })
+      .catch(done);
+    });
+    describe('get all the employees in the DataBase', () => {
+      it('should return a list of all employees', done => {
+        request.get(`${url}/api/all/employee`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body[0].firstName).to.equal(sampleEmployee.firstName);
           done();
         });
       });

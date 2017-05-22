@@ -45,6 +45,7 @@ employeeRouter.get('/api/all/employee', bearerAuth, function(req, res, next) {
   Employee.find({})
   .then( employees => {
     res.json(employees);
+    debug('res', employees);
   })
   .catch(next);
 });
