@@ -42,10 +42,22 @@ employeeRouter.get('/api/employee/:id', bearerAuth, jsonParser, function(req, re
 
 employeeRouter.get('/api/all/employee', bearerAuth, function(req, res, next) {
   debug('GET: /api/all/employee');
+
+
   Employee.find({})
   .then( employees => {
     res.json(employees);
     debug('res', employees);
+  })
+  .catch(next);
+});
+
+employeeRouter.put('/api/employee/:id', bearerAuth, jsonParser, function(req, res, next) {
+  debug('PUT: /api/employee/:id');
+  if(Object.keys(req.body).length === 0) return next(createError(400, 'Bad Request'));
+  Employee.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  .then( employee => {
+    res.json(employee);
   })
   .catch(next);
 });
