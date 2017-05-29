@@ -14,5 +14,11 @@ const timecardRouter = module.exports = Router();
 timecardRouter.post('/api/timecard', bearerAuth, jsonParser, function(req, res, next) {
   debug('POST: /api/timecard');
 
+  if(!req.body.payPeriod) return next(createError(400, 'pay period required'));
 
-})
+  return Timecard(req.body).save()
+  .then( timecard => {
+    res.json(timecard);
+  })
+  .catch(next);
+});
