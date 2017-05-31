@@ -13,6 +13,7 @@ dotenv.load();
 const errors = require('./lib/error-middleware.js');
 const authRouter = require('./routes/auth-route.js');
 const employee = require('./routes/employee-route.js');
+const timecard = require('./routes/timecard-route.js');
 
 const PORT = process.env.PORT || 8000;
 
@@ -22,6 +23,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(authRouter);
 app.use(employee);
+app.use(timecard);
 app.use(errors);
 
 app.listen(PORT, () => debug('the server is up on:', PORT));
