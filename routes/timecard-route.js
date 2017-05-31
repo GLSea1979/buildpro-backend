@@ -22,3 +22,14 @@ timecardRouter.post('/api/employee/:employeeID/timecard', bearerAuth, jsonParser
   })
   .catch(next);
 });
+
+timecardRouter.get('/api/timecard/:employeeID', bearerAuth, jsonParser, function(req, res, next) {
+  debug('GET: /api/timecard/:employeeID')
+
+  Timecard.find({employeeID: req.params.employeeID})
+  .then( timecards => {
+    if(!timecards) return next(createError(400, 'no timecards'));
+    res.json(timecards);
+  })
+  .catch(next);
+});

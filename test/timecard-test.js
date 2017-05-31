@@ -122,8 +122,69 @@ describe('Timecard Routes', function() {
         .end((err, res) => {
           expect(res.status).to.equal(400);
           done();
+        });
+      });
+    });
+    describe('without an auth token', () => {
+      it('should return a 401', done => {
+        request.post(`${url}/api/employee/${this.tempEmployee._id}/timecard`)
+        .set({
+          Authorization: 'Bearer '
+        })
+        .send(sampleTimecard)
+        .end((err, res) => {
+          expect(res.status).to.equal(401);
+          expect(err.message).to.equal('Unauthorized');
+          done();
+        });
+      });
+    });
+  });
+  describe('GET: api/timecard/:employeeID', () => {
+    before( done => {
+      new User(sampleUser)
+      .generatePasswordHash(sampleUser.password)
+      .then( user => user.save())
+      .then( user => {
+        this.tempUser = user;
+        return user.generateToken();
+      })
+      .then( token => {
+        this.tempToken = token;
+        done();
+      })
+      .catch(done);
+    });
+    before( done => {
+      new Employee(sampleEmployee).save()
+      .then( employee => {
+        this.tempEmployee = employee;
+        done();
+      })
+      .catch(done);
+    });
+    before( done => {
+      sampleTimecard.employeeID = this.tempEmployee._id;
+      new Timecard(sampleTimecard).save()
+      .then( timecard => {
+        this.tempTimecard = timecard;
+        done();
+      })
+      .catch(done);
+    });
+    describe('Request all timecards for an employee', () => {
+      it('should return a list of all timecards for an employee', done => {
+        request.get(`${url}/api/timecard/${this.tempEmployee._id}`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).to.equal(200);
+          expect(res.body[0].payPeriod).to.equal(sampleTimecard.payPeriod);
+          done();
         })
       })
     })
-  });
+  })
 });
