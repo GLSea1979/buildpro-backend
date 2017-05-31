@@ -13,6 +13,13 @@ const url = `http://localhost:${process.env.PORT}`;
 
 require('../server.js');
 
+const sampleTimecardTwo = {
+  payPeriod: 'some pay period two',
+  week1Monday: 8,
+  week2Friday: 8,
+  notes: 'some notes two'
+};
+
 const sampleTimecard = {
     payPeriod: 'some pay period',
     week1Monday: 8,
@@ -82,9 +89,11 @@ describe('Timecard Routes', function() {
     });
     before( done => {
       sampleEmployee.userID = this.tempUser._id;
+
       new Employee(sampleEmployee).save()
       .then( employee => {
         this.tempEmployee = employee;
+        sampleTimecard.employeeID = this.tempEmployee._id;
         done();
       })
       .catch(done);
@@ -92,17 +101,14 @@ describe('Timecard Routes', function() {
     describe('with a valid body', () => {
       it('should return a new timecard', done => {
         request.post(`${url}/api/employee/${this.tempEmployee._id}/timecard`)
-        .send(sampleTimecard)
         .set({
           Authorization: `Bearer ${this.tempToken}`
         })
-        .field('payPeriod', sampleTimecard.payPeriod)
-        .field('week1Monday', sampleTimecard.week1Monday)
-        .field('week2Friday', sampleTimecard.week2Friday)
-        .field('notes', sampleTimecard.notes)
+        .send(sampleTimecard)
         .end((err, res) => {
           if(err) return done(err);
           expect(res.status).to.equal(200);
+          expect(res.body.payPeriod).to.equal('some pay period');
           done();
         });
       });
