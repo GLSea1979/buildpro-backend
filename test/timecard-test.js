@@ -113,5 +113,17 @@ describe('Timecard Routes', function() {
         });
       });
     });
+    describe('without a valid body', () => {
+      it('should return a', done => {
+        request.post(`${url}/api/employee/2222/timecard`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        })
+      })
+    })
   });
 });
