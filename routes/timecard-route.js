@@ -24,7 +24,7 @@ timecardRouter.post('/api/employee/:employeeID/timecard', bearerAuth, jsonParser
 });
 
 timecardRouter.get('/api/timecard/:employeeID', bearerAuth, jsonParser, function(req, res, next) {
-  debug('GET: /api/timecard/:employeeID')
+  debug('GET: /api/timecard/:employeeID', req.params.employeeID)
 
   Timecard.find({employeeID: req.params.employeeID})
   .then( timecards => {

@@ -13,13 +13,6 @@ const url = `http://localhost:${process.env.PORT}`;
 
 require('../server.js');
 
-const sampleTimecardTwo = {
-  payPeriod: 'some pay period two',
-  week1Monday: 8,
-  week2Friday: 8,
-  notes: 'some notes two'
-};
-
 const sampleTimecard = {
     payPeriod: 'some pay period',
     week1Monday: 8,
@@ -37,6 +30,12 @@ const sampleTimecard = {
     week2Saturday: 8,
     weed2Sunday: 8,
     notes: 'some notes'
+};
+const sampleTimecardTwo = {
+  payPeriod: 'some pay period two',
+  week1Monday: 6,
+  week2Friday: 6,
+  notes: 'some notes two'
 };
 const sampleUser = {
   username: 'test user',
@@ -182,9 +181,22 @@ describe('Timecard Routes', function() {
           if(err) return done(err);
           expect(res.status).to.equal(200);
           expect(res.body[0].payPeriod).to.equal(sampleTimecard.payPeriod);
+          expect(res.body[0].week1Monday).to.equal(sampleTimecard.week1Monday);
           done();
+        });
+      });
+    });
+    describe('with an invalid employee id', () => {
+      it('should return a 400', done => {
+        request.get(`${url}/api/timecard/2222`)
+        .set({
+          Authorization: `Bearer ${this.tempToken}`
         })
-      })
-    })
-  })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    });
+  });
 });
