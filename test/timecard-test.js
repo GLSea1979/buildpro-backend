@@ -183,8 +183,8 @@ describe('Timecard Routes', function() {
           expect(res.status).to.equal(200);
           expect(res.body[0].payPeriod).to.equal(sampleTimecard.payPeriod);
           done();
-        })
-      })
-    })
-  })
+        });
+      });
+    });
+  });
 });
