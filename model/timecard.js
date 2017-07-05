@@ -25,3 +25,4 @@ const timecardSchema = Schema({
 });
 
 module.exports = mongoose.model('timecard', timecardSchema);
+// todo : build out the functionality
